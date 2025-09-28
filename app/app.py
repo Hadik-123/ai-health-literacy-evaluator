@@ -4,6 +4,13 @@ if ROOT not in sys.path:
     sys.path.insert(0, ROOT)
 import streamlit as st
 from evaluator.readability import compute_readability
+def classify_readability(fre_score: float) -> str:
+    if fre_score >= 70:
+        return "🟢 Easy to Read (6th–8th grade level)"
+    elif fre_score >= 50:
+        return "🟡 Moderate (High school level)"
+    else:
+        return "🔴 Difficult (College level or higher)"
 
 st.set_page_config(page_title="AI Health-Literacy Evaluator", layout="wide")
 # ✅ Custom Styling
@@ -76,6 +83,13 @@ with tab2:
         st.subheader("📊 Readability Metrics")
         cols = st.columns(2)
         metrics = st.session_state["res"]
+        # Extract Flesch Reading Ease
+fre = metrics.get("flesch_reading_ease", None)
+if fre is not None:
+    level = classify_readability(fre)
+    st.markdown(f"<h3 style='margin-top:1rem;'>Overall Classification: {level}</h3>", unsafe_allow_html=True)
+st.caption("This classification is based on the Flesch Reading Ease score.")
+
 
         for i, (key, val) in enumerate(metrics.items()):
             with cols[i % 2]:
