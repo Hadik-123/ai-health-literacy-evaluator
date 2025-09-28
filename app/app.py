@@ -83,14 +83,15 @@ with tab2:
         st.subheader("📊 Readability Metrics")
         cols = st.columns(2)
         metrics = st.session_state["res"]
-        # Extract Flesch Reading Ease
-fre = metrics.get("flesch_reading_ease", None)
-if fre is not None:
-    level = classify_readability(fre)
-    st.markdown(f"<h3 style='margin-top:1rem;'>Overall Classification: {level}</h3>", unsafe_allow_html=True)
-st.caption("This classification is based on the Flesch Reading Ease score.")
 
+        # ✅ Extract Flesch Reading Ease
+        fre = metrics.get("flesch_reading_ease", None)
+        if fre is not None:
+            level = classify_readability(fre)
+            st.markdown(f"<h3 style='margin-top:1rem;'>Overall Classification: {level}</h3>", unsafe_allow_html=True)
+            st.caption("This classification is based on the Flesch Reading Ease score.")
 
+        # ✅ Display metrics
         for i, (key, val) in enumerate(metrics.items()):
             with cols[i % 2]:
                 st.markdown(f"""
